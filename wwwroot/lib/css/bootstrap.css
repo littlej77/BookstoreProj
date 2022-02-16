@@ -4868,7 +4868,8 @@ textarea.form-control-lg {
   font-size: 0.75em;
   font-weight: 700;
   line-height: 1;
-  color: #212529;
+/*i changed this color but its not working*/
+  color: #212529;  
   text-align: center;
   white-space: nowrap;
   vertical-align: baseline;
