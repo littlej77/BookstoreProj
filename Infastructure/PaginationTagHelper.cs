@@ -38,7 +38,7 @@ namespace BookstoreProj.Infastructure
             IUrlHelper uh = uhf.GetUrlHelper(vc);
             TagBuilder final = new TagBuilder("div");
 
-            for (int i = 1; i < (PageBlah.TotalPages +1); i++)
+            for (int i = 1; i < (PageBlah.TotalPages); i++)
             {
                 TagBuilder tb = new TagBuilder("a");
 
