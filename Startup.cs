@@ -39,6 +39,13 @@ namespace BookstoreProj
            });
 
             services.AddScoped<IBookstoreRepository, EFBookstoreProjectRepository>();
+            // add this to be able to use razorpages
+            services.AddRazorPages();
+
+            //how to add the session stuff
+
+            services.AddDistributedMemoryCache();
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,14 +56,38 @@ namespace BookstoreProj
                 app.UseDeveloperExceptionPage();
             }
             // HERE    corresponds to the wwwroot. tells it to use the files in that folder
+            //add session here
             app.UseStaticFiles();
-
+            app.UseSession();
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
             {
-                //HERE    says to follow controller first, then action , then ID
+                //we want to execute the endpoint with the most things passed in first..then work down to nothing
+                //this is a simpler way of typing but its still name, pattern, default
+                //the {} says "this is gonna be a piece of info passed into me. 
+
+                endpoints.MapControllerRoute("categorypage","{bookCategory}/Page{pagenum}", 
+                        new { Controller = "Home", action = "Index" });
+
+
+                //here they just pass in the PAGE NUMBER
+                endpoints.MapControllerRoute(
+                    name: "Paging",
+                    pattern: "Page{pagenum}",
+                    defaults: new { Controller = "Home", action = "Index", pageNum=1 });
+
+
+                //this is if we just get a CATEGORY
+                endpoints.MapControllerRoute("category", "{bookCategory}",
+                    new{ Controller = "Home", action = "Index", pageNum=1});
+
+
+
+                //HERE they pass in nothing.  says to follow controller first, then action , then ID
                 endpoints.MapDefaultControllerRoute();
+
+                endpoints.MapRazorPages();
             });
         }
     }

@@ -3,38 +3,20 @@
     ViewData["Title"] = "Bookstore Home Page";
 }
 @model BooksViewModel
-<h1>Welome to my online bookstore!</h1>
 
 @foreach (Book b in Model.Books)
 {
-<div class="card card-outline-primary m-1 p-1">
-    <div class="bg-faded p-1">
-        <h3>
-            @b.Title
-            <span class="badge badge-pill badge-primary" style="float:right" color="#000">
-                <small font-color="#000">$@b.Price</small>
-            </span>
-        </h3>
-    </div>
-    <div class="card-text p-1">
-        <ul>
-            <li>Author: @b.Author</li>
-            <li>Publisher: @b.Publisher</li>
-            <li>ISBN: @b.Isbn</li>
-            <li>Classification: @b.Classification</li>
-            <li>Category: @b.Category </li>
-            <li>Page Count: @b.PageCount pages</li>
-            <li>Price: @b.Price </li>
-        </ul>
-    </div>
-</div>
+    //coding by convention -- it will go look for booksummary in the shared folder
+    //the model part sends the b over to the partial view (BookSummary)
+    <partial name="BookSummary" model="b"/>
 }
-<div page-blah="@Model.PageInfo" page-action="Index" ></div>
+<div page-blah="@Model.PageInfo" page-action="Index" page-class="btn" page-classes-enabled="true"
+        page-class-normal="btn-outline-dark" page-class-selected="btn-primary"></div>
 
 
          
          
-
+ 
  @*<a asp-action="Index" asp-route-pageNum="1">1</a>
 <a asp-action="Index" asp-route-pageNum="2">2</a>
 <a asp-action="Index" asp-route-pageNum="3">3</a>*@

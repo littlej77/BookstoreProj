@@ -31,6 +31,12 @@ namespace BookstoreProj.Infastructure
         //the page-blah from the index page is being passed into this variable 
         public PageInfo PageBlah {get; set;}
         public string PageAction { get; set; }
+        // it knows this is linked the page-class on the index page.
+        public string PageClass { get; set; }
+        public bool PageClassesEnabled { get; set; }
+        public string PageClassNormal { get; set; }
+        public string PageClassSelected { get; set; }
+    
 
         //a tool that will help us build these tags dynamically 
         public override void Process(TagHelperContext context, TagHelperOutput output)
@@ -38,11 +44,19 @@ namespace BookstoreProj.Infastructure
             IUrlHelper uh = uhf.GetUrlHelper(vc);
             TagBuilder final = new TagBuilder("div");
 
-            for (int i = 1; i < (PageBlah.TotalPages +1); i++)
+            for (int i = 1; i <= (PageBlah.TotalPages +1); i++)
             {
                 TagBuilder tb = new TagBuilder("a");
 
                 tb.Attributes["href"] = uh.Action(PageAction, new { pageNum = i });
+                //this if statment makes it so the page num you are on is highlighted 
+                if (PageClassesEnabled)
+                {
+                    tb.AddCssClass(PageClass);
+                    tb.AddCssClass(i == PageBlah.CurrentPage ? PageClassSelected : PageClassNormal);
+                }                  //if                      then              else
+
+                tb.AddCssClass(PageClass);
                 tb.InnerHtml.Append(i.ToString());
 
                 final.InnerHtml.AppendHtml(tb);
