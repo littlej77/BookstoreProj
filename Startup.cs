@@ -40,12 +40,16 @@ namespace BookstoreProj
 
             services.AddScoped<IBookstoreRepository, EFBookstoreProjectRepository>();
             // add this to be able to use razorpages
+            services.AddScoped<IPurchaseRepository, EFPurchaseRepository>();
             services.AddRazorPages();
 
             //how to add the session stuff
 
             services.AddDistributedMemoryCache();
             services.AddSession();
+            
+            services.AddScoped<Basket>(x => SessionBasket.GetBasket(x));
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

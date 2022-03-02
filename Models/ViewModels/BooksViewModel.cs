@@ -11,4 +11,5 @@ namespace BookstoreProj.Models.ViewModels
         public PageInfo PageInfo { get; set; }
 
     }
+ 
 }
