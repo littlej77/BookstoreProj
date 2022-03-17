@@ -2,6 +2,7 @@ using BookstoreProj.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,6 +39,14 @@ namespace BookstoreProj
                options.UseSqlite(Configuration["ConnectionStrings:BookDBConnection"]);
            });
 
+            //setting up the connection to the database for the identity part (login to the admin-- mission 11)
+            services.AddDbContext<AppIdentityDBContext>(options =>
+                options.UseSqlite(Configuration["ConnectionStrings:IdentityConnection"]));
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppIdentityDBContext>();
+
+
             services.AddScoped<IBookstoreRepository, EFBookstoreProjectRepository>();
             // add this to be able to use razorpages
             services.AddScoped<IPurchaseRepository, EFPurchaseRepository>();
@@ -66,6 +75,11 @@ namespace BookstoreProj
             app.UseStaticFiles();
             app.UseSession();
             app.UseRouting();
+
+            //middleware: going to implement the security policy as we do the routing b4 we go to endpoints to make sure they can go to the places the user is trying to go to.
+            app.UseAuthentication();
+            app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {
@@ -98,6 +112,9 @@ namespace BookstoreProj
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/admin/{*catchall}", "/Admin/Index");
             });
+
+
+            IdentitySeedData.EnsurePopulated(app);
         }
     }
 }

@@ -17,26 +17,29 @@
     </tbody>
 </table>
 
+@* button grouping on the details page *@
+<div class="btn-group" role="group" aria-label="Basic example">
+    <NavLink class="btn btn-warning" href="@EditUrl">Edit</NavLink>
+    <NavLink class="btn btn-secondary" href="/admin/Books">Go Back</NavLink>
+</div>
 
-<NavLink class="btn btn-warning" href="@EditUrl">Edit</NavLink>
-<NavLink class="btn btn-secondary" href="/admin/Books">Go Back</NavLink>
 
 
 
-@code {
+    @code {
 
-    [Inject]
-    public IBookstoreRepository repo { get; set; }
+        [Inject]
+        public IBookstoreRepository repo { get; set; }
 
-    [Parameter]
-    public long Id { get; set; }
+        [Parameter]
+        public long Id { get; set; }
 
-    public Book book { get; set; }
+        public Book book { get; set; }
 
-    protected override void OnParametersSet()
-    {
-        book = repo.Books.FirstOrDefault(x => x.BookId == Id);
+        protected override void OnParametersSet()
+        {
+            book = repo.Books.FirstOrDefault(x => x.BookId == Id);
+        }
+
+        public string EditUrl => $"/admin/Books/edit/{book.BookId}";
     }
-
-    public string EditUrl => $"/admin/Books/edit/{book.BookId}";
-}
